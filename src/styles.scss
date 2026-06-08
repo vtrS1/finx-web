@@ -18,7 +18,7 @@ html {
 }
 
 body {
-  background: #f6f8f7;
+  background: #f4f7fb;
   margin: 0;
 }
 
@@ -26,4 +26,8 @@ button,
 input,
 select {
   font: inherit;
+}
+
+::selection {
+  background: rgba(100, 190, 217, 0.28);
 }

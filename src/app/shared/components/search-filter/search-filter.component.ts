@@ -18,6 +18,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
+import { formatDateToIsoDate, parseIsoDate } from '@core/utils/date.utils';
 import {
   SearchFilterField,
   SearchFilterOption,
@@ -79,7 +80,7 @@ export class SearchFilterComponent implements OnChanges {
         {
           searchTerm: this.value.searchTerm,
           searchField: this.value.searchField,
-          createdAt: this.value.createdAt ? new Date(this.value.createdAt) : null,
+          createdAt: this.value.createdAt ? parseIsoDate(this.value.createdAt) : null,
           sortDirection: this.value.sortDirection,
         },
         { emitEvent: false },
@@ -113,20 +114,8 @@ export class SearchFilterComponent implements OnChanges {
     this.valueChanged.emit({
       searchTerm: value.searchTerm,
       searchField: value.searchField,
-      createdAt: this.formatDate(value.createdAt),
+      createdAt: formatDateToIsoDate(value.createdAt),
       sortDirection: value.sortDirection,
     });
-  }
-
-  private formatDate(date: Date | null): string {
-    if (!date) {
-      return '';
-    }
-
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-
-    return `${year}-${month}-${day}`;
   }
 }

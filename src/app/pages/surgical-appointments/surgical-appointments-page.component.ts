@@ -17,7 +17,7 @@ import {
   SurgicalAppointmentsResponse,
 } from '@core/models/surgical-appointment.model';
 import { SurgicalAppointmentsService } from '@core/services/surgical-appointments.service';
-import { calculateAge } from '@core/utils/date.utils';
+import { calculateAge, formatDateTime } from '@core/utils/date.utils';
 import { DataTableComponent } from '@shared/components/data-table/data-table.component';
 import { DataTableColumn, DataTableSort } from '@shared/components/data-table/data-table.model';
 import {
@@ -64,6 +64,8 @@ const INITIAL_QUERY: AppointmentQuery = {
 export class SurgicalAppointmentsPageComponent {
   private readonly querySubject = new BehaviorSubject<AppointmentQuery>(INITIAL_QUERY);
 
+  isSidebarOpen = false;
+
   readonly columns: DataTableColumn<SurgicalAppointment>[] = [
     {
       key: 'doctor',
@@ -83,7 +85,7 @@ export class SurgicalAppointmentsPageComponent {
     {
       key: 'createdAt',
       header: 'Criacao',
-      cell: (appointment) => this.formatCreatedAt(appointment.createdAt),
+      cell: (appointment) => formatDateTime(appointment.createdAt),
       sortable: true,
     },
   ];
@@ -164,22 +166,19 @@ export class SurgicalAppointmentsPageComponent {
     };
   }
 
+  openSidebar(): void {
+    this.isSidebarOpen = true;
+  }
+
+  closeSidebar(): void {
+    this.isSidebarOpen = false;
+  }
+
   private patchQuery(query: Partial<AppointmentQuery>): void {
     this.querySubject.next({
       ...this.querySubject.value,
       ...query,
     });
-  }
-
-  private formatCreatedAt(createdAt: string): string {
-    return new Intl.DateTimeFormat('pt-BR', {
-      day: '2-digit',
-      hour: '2-digit',
-      minute: '2-digit',
-      month: '2-digit',
-      timeZone: 'UTC',
-      year: 'numeric',
-    }).format(new Date(createdAt));
   }
 
   private getErrorMessage(error: unknown): string {

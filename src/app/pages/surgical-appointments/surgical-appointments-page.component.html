@@ -1,68 +1,105 @@
 <main class="appointments-page">
-  <section class="page-header" aria-labelledby="appointments-title">
-    <div>
-      <span class="eyebrow">Fin-X AC</span>
-      <h1 id="appointments-title">Solicitacoes cirurgicas</h1>
-      <p>
-        Consulta otimizada para acompanhar agendamentos, encontrar pacientes e ordenar solicitacoes
-        por data de criacao.
-      </p>
-    </div>
-    <div class="header-card" aria-label="Contexto da operacao">
-      <strong>Jornada cirurgica</strong>
-      <span>Operacao integrada entre medicos, pacientes e hospital.</span>
-    </div>
-  </section>
+  <div class="app-shell">
+    <button
+      class="sidebar-backdrop"
+      [class.sidebar-backdrop--visible]="isSidebarOpen"
+      type="button"
+      aria-label="Fechar menu"
+      (click)="closeSidebar()"
+    ></button>
 
-  @if (viewModel$ | async; as viewModel) {
-    <section class="filters-panel">
-      <app-search-filter
-        [value]="viewModel.query"
-        [fieldOptions]="searchFieldOptions"
-        searchPlaceholder="Nome do medico ou paciente"
-        (valueChanged)="onFiltersChanged($event)"
-      />
-    </section>
+    <aside class="sidebar" [class.sidebar--open]="isSidebarOpen" aria-label="Modulos da plataforma">
+      <div class="sidebar__header">
+        <div class="sidebar__brand">
+          <strong>Fin-X</strong>
+          <span>Centro cirurgico</span>
+        </div>
 
-    <section class="content-panel" aria-live="polite">
-      @if (viewModel.status === 'loading') {
-        <div class="loading-state">
-          <span></span>
-          <p>Carregando agendamentos...</p>
+        <button
+          class="sidebar__close"
+          type="button"
+          aria-label="Fechar menu"
+          (click)="closeSidebar()"
+        >
+          ×
+        </button>
+      </div>
+
+      <nav aria-label="Menu principal">
+        <div class="sidebar__item sidebar__item--active" aria-current="page">
+          <span aria-hidden="true">AC</span>
+          <strong>Solicitacoes cirurgicas</strong>
         </div>
-      } @else if (viewModel.status === 'error') {
-        <div class="empty-state">
-          <strong>Algo saiu do fluxo.</strong>
-          <p>{{ viewModel.message }}</p>
-        </div>
-      } @else {
-        <div class="result-bar">
-          <div>
-            <strong>{{ viewModel.response.pagination.totalItems }}</strong>
-            <span>solicitacoes encontradas</span>
+      </nav>
+    </aside>
+
+    <div class="workspace">
+      <header class="topbar" aria-label="Contexto do ambiente">
+        <div class="topbar__start">
+          <button class="menu-button" type="button" aria-label="Abrir menu" (click)="openSidebar()">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+
+          <div class="brand-lockup">
+            <strong>AC</strong>
+            <span>Agendamento Cirurgico</span>
           </div>
-          <div>
-            <strong>{{ viewModel.response.pagination.currentPage }}</strong>
-            <span>de {{ viewModel.response.pagination.totalPages }} paginas</span>
-          </div>
         </div>
+      </header>
 
-        <app-data-table
-          [data]="viewModel.response.data"
-          [columns]="columns"
-          [sort]="getTableSort(viewModel.query)"
-          emptyTitle="Nenhuma solicitacao encontrada."
-          emptyDescription="Ajuste a busca ou limpe os filtros para ampliar a consulta."
-          (sortChanged)="onDataTableSortChanged($event)"
-        />
+      <section class="page-header" aria-labelledby="appointments-title">
+        <div>
+          <span class="eyebrow">Jornada cirurgica integrada</span>
+          <h1 id="appointments-title">Solicitacoes cirurgicas</h1>
+          <p>
+            Visao operacional para acompanhar entradas, localizar pacientes e dar previsibilidade ao
+            fluxo de agendamento.
+          </p>
+        </div>
+      </section>
 
-        <app-pagination
-          [currentPage]="viewModel.response.pagination.currentPage"
-          [itemsPerPage]="viewModel.response.pagination.itemsPerPage"
-          [totalItems]="viewModel.response.pagination.totalItems"
-          (paginationChanged)="onPaginationChanged($event)"
-        />
+      @if (viewModel$ | async; as viewModel) {
+        <section class="filters-panel">
+          <app-search-filter
+            [value]="viewModel.query"
+            [fieldOptions]="searchFieldOptions"
+            searchPlaceholder="Nome do medico ou paciente"
+            (valueChanged)="onFiltersChanged($event)"
+          />
+        </section>
+
+        <section class="content-panel" aria-live="polite">
+          @if (viewModel.status === 'loading') {
+            <div class="loading-state">
+              <span></span>
+              <p>Carregando agendamentos...</p>
+            </div>
+          } @else if (viewModel.status === 'error') {
+            <div class="empty-state">
+              <strong>Algo saiu do fluxo.</strong>
+              <p>{{ viewModel.message }}</p>
+            </div>
+          } @else {
+            <app-data-table
+              [data]="viewModel.response.data"
+              [columns]="columns"
+              [sort]="getTableSort(viewModel.query)"
+              emptyTitle="Nenhuma solicitacao encontrada."
+              emptyDescription="Ajuste a busca ou limpe os filtros para ampliar a consulta."
+              (sortChanged)="onDataTableSortChanged($event)"
+            />
+
+            <app-pagination
+              [currentPage]="viewModel.response.pagination.currentPage"
+              [itemsPerPage]="viewModel.response.pagination.itemsPerPage"
+              [totalItems]="viewModel.response.pagination.totalItems"
+              (paginationChanged)="onPaginationChanged($event)"
+            />
+          }
+        </section>
       }
-    </section>
-  }
+    </div>
+  </div>
 </main>
