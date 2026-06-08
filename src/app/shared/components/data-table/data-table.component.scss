@@ -7,19 +7,22 @@
 }
 
 table {
+  background: #ffffff;
+  border-collapse: separate;
+  border-spacing: 0;
   width: 100%;
 }
 
 th.mat-mdc-header-cell,
 td.mat-mdc-cell {
-  border-bottom-color: #e7efed;
+  border-bottom-color: #e5edf2;
   color: #26393d;
-  padding: 18px 22px;
+  padding: 16px 22px;
   white-space: nowrap;
 }
 
 th.mat-mdc-header-cell {
-  background: #f4f8f7;
+  background: #f7fafc;
   color: #526468;
   font-size: 0.78rem;
   font-weight: 800;
@@ -38,15 +41,29 @@ th button {
 }
 
 th button span {
+  background: #e8f5fb;
+  border-radius: 999px;
+  color: #005da7;
   display: inline-block;
-  font-size: 0.9rem;
+  font-size: 0.78rem;
+  height: 20px;
+  line-height: 20px;
   margin-left: 6px;
-  min-width: 10px;
+  min-width: 20px;
+  text-align: center;
 }
 
 td.mat-mdc-cell:first-child {
-  color: #047d73;
+  color: #005da7;
   font-weight: 800;
+}
+
+tr.mat-mdc-row {
+  transition: background 160ms ease;
+}
+
+tr.mat-mdc-row:hover {
+  background: #f8fbfd;
 }
 
 .mobile-list {
@@ -83,8 +100,10 @@ td.mat-mdc-cell:first-child {
   }
 
   article {
-    border: 1px solid #deebe8;
+    background: #ffffff;
+    border: 1px solid #d9e8f0;
     border-radius: 8px;
+    box-shadow: 0 10px 24px rgba(16, 35, 56, 0.06);
     padding: 16px;
   }
 
@@ -112,7 +131,7 @@ td.mat-mdc-cell:first-child {
   }
 
   dl div:first-child dd {
-    color: #047d73;
+    color: #005da7;
     font-weight: 800;
   }
 }
