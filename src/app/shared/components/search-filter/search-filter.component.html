@@ -1,0 +1,53 @@
+<form class="search-filter" [formGroup]="form">
+  <div class="search-filter__row">
+    <mat-form-field class="search-filter__search" appearance="outline" subscriptSizing="dynamic">
+      <mat-label>Buscar solicitacao</mat-label>
+      <input
+        matInput
+        type="search"
+        formControlName="searchTerm"
+        [placeholder]="searchPlaceholder"
+        aria-label="Buscar"
+      />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" subscriptSizing="dynamic">
+      <mat-label>Pesquisar em</mat-label>
+      <mat-select formControlName="searchField" aria-label="Campo de busca">
+        @for (option of fieldOptions; track option.value) {
+          <mat-option [value]="option.value">{{ option.label }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" subscriptSizing="dynamic">
+      <mat-label>Data de criacao</mat-label>
+      <input
+        matInput
+        [matDatepicker]="createdAtPicker"
+        formControlName="createdAt"
+        aria-label="Filtrar por data de criacao"
+      />
+      <mat-datepicker-toggle matIconSuffix [for]="createdAtPicker" />
+      <mat-datepicker #createdAtPicker />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" subscriptSizing="dynamic">
+      <mat-label>Ordenar por data</mat-label>
+      <mat-select formControlName="sortDirection" aria-label="Ordenar por data">
+        <mat-option value="desc">Mais recente primeiro</mat-option>
+        <mat-option value="asc">Mais antigo primeiro</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <button
+      mat-stroked-button
+      class="search-filter__clear"
+      type="button"
+      [disabled]="!hasActiveFilters"
+      (click)="reset()"
+    >
+      Limpar filtros
+    </button>
+  </div>
+</form>

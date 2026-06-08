@@ -1,0 +1,9 @@
+<mat-paginator
+  [length]="totalItems"
+  [pageIndex]="pageIndex"
+  [pageSize]="itemsPerPage"
+  [pageSizeOptions]="pageSizeOptions"
+  [showFirstLastButtons]="true"
+  aria-label="Paginacao"
+  (page)="onPageChanged($event)"
+/>
