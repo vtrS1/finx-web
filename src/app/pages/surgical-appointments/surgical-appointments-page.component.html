@@ -1,0 +1,68 @@
+<main class="appointments-page">
+  <section class="page-header" aria-labelledby="appointments-title">
+    <div>
+      <span class="eyebrow">Fin-X AC</span>
+      <h1 id="appointments-title">Solicitacoes cirurgicas</h1>
+      <p>
+        Consulta otimizada para acompanhar agendamentos, encontrar pacientes e ordenar solicitacoes
+        por data de criacao.
+      </p>
+    </div>
+    <div class="header-card" aria-label="Contexto da operacao">
+      <strong>Jornada cirurgica</strong>
+      <span>Operacao integrada entre medicos, pacientes e hospital.</span>
+    </div>
+  </section>
+
+  @if (viewModel$ | async; as viewModel) {
+    <section class="filters-panel">
+      <app-search-filter
+        [value]="viewModel.query"
+        [fieldOptions]="searchFieldOptions"
+        searchPlaceholder="Nome do medico ou paciente"
+        (valueChanged)="onFiltersChanged($event)"
+      />
+    </section>
+
+    <section class="content-panel" aria-live="polite">
+      @if (viewModel.status === 'loading') {
+        <div class="loading-state">
+          <span></span>
+          <p>Carregando agendamentos...</p>
+        </div>
+      } @else if (viewModel.status === 'error') {
+        <div class="empty-state">
+          <strong>Algo saiu do fluxo.</strong>
+          <p>{{ viewModel.message }}</p>
+        </div>
+      } @else {
+        <div class="result-bar">
+          <div>
+            <strong>{{ viewModel.response.pagination.totalItems }}</strong>
+            <span>solicitacoes encontradas</span>
+          </div>
+          <div>
+            <strong>{{ viewModel.response.pagination.currentPage }}</strong>
+            <span>de {{ viewModel.response.pagination.totalPages }} paginas</span>
+          </div>
+        </div>
+
+        <app-data-table
+          [data]="viewModel.response.data"
+          [columns]="columns"
+          [sort]="getTableSort(viewModel.query)"
+          emptyTitle="Nenhuma solicitacao encontrada."
+          emptyDescription="Ajuste a busca ou limpe os filtros para ampliar a consulta."
+          (sortChanged)="onDataTableSortChanged($event)"
+        />
+
+        <app-pagination
+          [currentPage]="viewModel.response.pagination.currentPage"
+          [itemsPerPage]="viewModel.response.pagination.itemsPerPage"
+          [totalItems]="viewModel.response.pagination.totalItems"
+          (paginationChanged)="onPaginationChanged($event)"
+        />
+      }
+    </section>
+  }
+</main>
